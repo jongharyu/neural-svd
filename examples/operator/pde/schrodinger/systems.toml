@@ -1,0 +1,228 @@
+[H]
+coords = [[0.0, 0.0, 0.0]]
+charges = [1]
+charge = 0
+spin = 1
+unit = 'angstrom'
+
+["H2+"]
+coords = [[-0.52918, 0.0, 0.0], [0.52918, 0.0, 0.0]]
+charges = [1, 1]
+charge = 1
+spin = 1
+unit = 'angstrom'
+
+[H2]
+coords = [[0.0, 0.0, 0.0], [0.742, 0.0, 0.0]]
+charges = [1, 1]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[He]
+coords = [[0.0, 0.0, 0.0]]
+charges = [2]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[Li]
+coords = [[0.0, 0.0, 0.0]]
+charges = [3]
+charge = 0
+spin = 1
+unit = 'angstrom'
+
+[Be]
+coords = [[0.0, 0.0, 0.0]]
+charges = [4]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[B]
+coords = [[0.0, 0.0, 0.0]]
+charges = [5]
+charge = 0
+spin = 1
+unit = 'angstrom'
+
+[C]
+coords = [[0.0, 0.0, 0.0]]
+charges = [6]
+charge = 0
+spin = 2
+unit = 'angstrom'
+
+[C_0]
+coords = [[0.0, 0.0, 0.0]]
+charges = [6]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[N]
+coords = [[0.0, 0.0, 0.0]]
+charges = [7]
+charge = 0
+spin = 1
+unit = 'angstrom'
+
+[O]
+coords = [[0.0, 0.0, 0.0]]
+charges = [8]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[LiH]
+coords = [[0.0, 0.0, 0.0], [1.595, 0.0, 0.0]]
+charges = [3, 1]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[CO2]
+coords = [[-1.161, 0.0, 0.0], [0.0, 0.0, 0.0], [1.161, 0.0, 0.0]]
+charges = [8, 6, 8]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[Li2]
+coords = [[-1.3364, 0.0, 0.0], [1.3364, 0.0, 0.0]]
+charges = [3, 3]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[Be2]
+coords = [[-1.230, 0.0, 0.0], [1.230, 0.0, 0.0]]
+charges = [4, 4]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[B2]
+coords = [[-0.7951, 0.0, 0.0], [0.7951, 0.0, 0.0]]
+charges = [5, 5]
+charge = 0
+spin = 2
+unit = 'angstrom'
+
+[C2]
+coords = [[-0.621265, 0.0, 0.0], [0.621265, 0.0, 0.0]]
+charges = [6, 6]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[N2]
+coords = [[-2.13534, 0.0, 0.0], [2.13534, 0.0, 0.0]]
+charges = [7, 7]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[BeH]
+coords = [[0.0, 0.0, 0.0], [1.326903, 0.0, 0.0]]
+charges = [4, 1]
+charge = 0
+spin = 1
+unit = 'angstrom'
+
+[BH]
+coords = [[0.0, 0.0, 0.0], [0.0, 0.0, 1.222874]]
+charges = [5, 1]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+["CH+"]
+coords = [[0.0, 0.0, 0.0], [1.13092, 0.0, 0.0]]
+charges = [6, 1]
+charge = 1
+spin = 0
+unit = 'angstrom'
+
+[H2O]
+coords = [
+    [0.0, 0.0, -0.069903],
+    [0.0, 0.757532, 0.518435],
+    [0.0, -0.757532, 0.518435],
+]
+charges = [8, 1, 1]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[NH3]
+coords = [
+    [0.067759, -0.0, 0.0],
+    [-0.313823, 0.468746, -0.811891],
+    [-0.313823, -0.937491, -0.0],
+    [-0.313823, 0.468746, 0.811891],
+]
+charges = [7, 1, 1, 1]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[CO]
+coords = [[0.0, 0.0, -0.661165], [0.0, 0.0, 0.472379]]
+charges = [6, 8]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[benzene]
+coords = [
+    [0.000000, 1.396792, 0.000000],
+    [0.000000, -1.396792, 0.000000],
+    [1.209657, 0.698396, 0.000000],
+    [-1.209657, -0.698396, 0.000000],
+    [-1.209657, 0.698396, 0.000000],
+    [1.209657, -0.698396, 0.000000],
+    [0.000000, 2.484212, 0.000000],
+    [2.151390, 1.242106, 0.000000],
+    [-2.151390, -1.242106, 0.000000],
+    [-2.151390, 1.242106, 0.000000],
+    [2.151390, -1.242106, 0.000000],
+    [0.000000, -2.484212, 0.000000],
+]
+charges = [6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 1, 1]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[ethylene_trsn_0]
+coords = [
+    [-0.675000, 0.000000, 0.000000],
+    [0.675000, 0.000000, 0.000000],
+    [-1.242900, 0.000000, -0.930370],
+    [-1.242900, 0.000000, 0.930370],
+    [1.242900, -0.000000, -0.930370],
+    [1.242900, 0.000000, 0.930370],
+]
+charges = [6, 6, 1, 1, 1, 1]
+charge = 0
+spin = 0
+unit = 'angstrom'
+
+[bicyclobutane]
+coords = [
+    [0.7507, 0.0000, -0.3193],
+    [-0.7507, 0.0000, -0.3193],
+    [0.0000, 1.1350, 0.3153],
+    [0.0000, -1.1350, 0.3153],
+    [1.4194, 0.0000, -1.1631],
+    [-1.4194, 0.0000, -1.1631],
+    [0.0000, 2.0820, -0.2148],
+    [0.0000, -2.0820, -0.2148],
+    [0.0000, 1.2163, 1.4020],
+    [0.0000, -1.2163, 1.4020],
+]
+charges = [6, 6, 6, 6, 1, 1, 1, 1, 1, 1]
+charge = 0
+spin = 0
+unit = 'angstrom'
