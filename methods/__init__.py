@@ -1,10 +1,7 @@
-from methods.ssl.barlowtwins import BarlowTwinsLoss
 from methods.neuralef import NeuralEigenfunctions, NeuralEigenmapsLossCDK, NeuralEigenmapsLoss
 from methods.nestedlora import NestedLoRA, NestedLoRAForCDK
-from methods.neuralsvd import NeuralSVDLoss, NeuralSVDLossFixedKernel, NeuralSVDLossCDK
 from methods.spin import SpIN
 from methods.spinx import SpINx
-from methods.ssl.simclr import SimCLRLoss
 
 
 def get_evd_method(args, method_name, model):
@@ -36,7 +33,7 @@ def get_evd_method(args, method_name, model):
             batchnorm_mode=args.loss.neuralef.batchnorm_mode,
             reg_weight=args.loss.neuralef.reg_weight
         )
-    elif method_name == 'nestedlora':
+    elif method_name == 'neuralsvd':
         method = NestedLoRA(
             model,
             neigs=args.neigs,
@@ -48,21 +45,6 @@ def get_evd_method(args, method_name, model):
             separation_init_scale=args.loss.neuralsvd.separation_init_scale,
             inner_product=args.loss.neuralsvd.inner_product,
             residual_weight=args.residual_weight,
-        )
-    elif method_name == 'neuralsvd':
-        method = NeuralSVDLoss(
-            model,
-            step=args.loss.neuralsvd.step,
-            neigs=args.neigs,
-            sequential=args.loss.neuralsvd.sequential,
-            separation=args.loss.neuralsvd.separation,
-            separation_mode=args.loss.neuralsvd.separation_mode,
-            separation_init_scale=args.loss.neuralsvd.separation_init_scale,
-            stop_grad=args.loss.neuralsvd.stop_grad,
-            along_batch_dim=args.loss.neuralsvd.along_batch_dim,
-            weight_order=args.loss.neuralsvd.weight_order,
-            oneshot=args.loss.neuralsvd.oneshot,
-            unittest=args.loss.neuralsvd.unittest,
         )
     else:
         raise NotImplementedError
@@ -80,16 +62,6 @@ def get_cdk_method(args, method_name, model):
             separation=args.loss.neuralsvd.separation,
             separation_mode=args.loss.neuralsvd.separation_mode,
             separation_init_scale=args.loss.neuralsvd.separation_init_scale,
-        )
-    elif method_name == 'barlowtwins':
-        loss_ftn = BarlowTwinsLoss(
-            feature_dim=args.model.output_dim,
-            reg_weight=args.loss.barlowtwins.reg_weight,
-            device=None)  # TODO: fix device?
-    elif method_name == 'simclr':
-        loss_ftn = SimCLRLoss(
-            normalize=args.loss.simclr.normalize,
-            temperature=args.loss.simclr.temperature
         )
     elif method_name == 'neuralef':
         loss_ftn = NeuralEigenmapsLossCDK(

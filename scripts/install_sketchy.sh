@@ -1,6 +1,6 @@
 export CONDA_ALWAYS_YES="true"
-conda create -n kernel python=3.7
-conda activate kernel
+conda create -n sketchy python=3.7
+conda activate sketchy
 conda install -y numpy scikit-learn matplotlib tqdm
 conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
 # conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia  # for pytorch 2.0

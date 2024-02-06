@@ -1,11 +1,13 @@
 #!/bin/bash
 
-conda activate kerneltf
+echo "USING GPU $CUDA_VISIBLE_DEVICES"
 
-# export OMP_NUM_THREADS=1  # reference https://github.com/bcgsc/mavis/issues/185
-export ROOT="/home/jongha/"
-export PYTHONPATH="${PYTHONPATH}:${ROOT}/working/neural-svd"
+#export OMP_NUM_THREADS=1  # reference https://github.com/bcgsc/mavis/issues/185
+export ROOT="/home/"
+export SRCROOT="/home/src/neural-svd"
+export PYTHONPATH="${PYTHONPATH}:${SRCROOT}"
 
+# shellcheck disable=SC2054
 args=(
     --optimizer rmsprop
     --use_lr_scheduler
@@ -65,5 +67,5 @@ args=(
 )
 
 for seed in {0..9}; do
-    python ${ROOT}/working/neural-svd/examples/operator/main_pde.py "${args[@]}" --loss_name $1 --seed $seed
+    $ROOT/.conda/envs/pde/bin/python $SRCROOT/examples/operator/main_pde.py "${args[@]}" --loss_name $1 --seed $seed
 done

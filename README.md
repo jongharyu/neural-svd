@@ -32,10 +32,10 @@ Here, the last flag `seq` indicates the version of nesting for `NestedLoRA`.
 
 For example, to replicate the set of experiments, one can run 
 ```bash
-. scripts/pde_hydrogen.sh nestedlora 128 1
-. scripts/pde_hydrogen.sh nestedlora 512 1
-. scripts/pde_hydrogen.sh nestedlora 128 0
-. scripts/pde_hydrogen.sh nestedlora 512 0
+. scripts/pde_hydrogen.sh neuralsvd 128 1
+. scripts/pde_hydrogen.sh neuralsvd 512 1
+. scripts/pde_hydrogen.sh neuralsvd 128 0
+. scripts/pde_hydrogen.sh neuralsvd 512 0
 . scripts/pde_hydrogen.sh neuralef 128 0  # last flag doesn't matter
 . scripts/pde_hydrogen.sh neuralef 512 0  # last flag doesn't matter
 . scripts/pde_hydrogen.sh spin 128 0  # last flag doesn't matter
