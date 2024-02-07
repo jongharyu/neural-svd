@@ -183,7 +183,7 @@ def main(args):
                     # TODO: plug-in joint_mask
                     # cls = cls.unsqueeze(1).cuda(gpu, non_blocking=True)  # (B, 1)
                     # joint_mask = (cls == cls.T)  # (B, B)
-                    _, fx_emb, _, fy_emb = model(
+                    _, fx_emb, _, fy_emb = method(
                         x.cuda(gpu, non_blocking=True),
                         y.cuda(gpu, non_blocking=True)
                     )
@@ -222,7 +222,7 @@ def main(args):
                 rs_pxy_test, rs_pxpy_test = [], []
                 for idx, (x, y, cls) in enumerate(tqdm(test_loader)):
                     with torch.cuda.amp.autocast(enabled=not args.disable_amp):
-                        _, fx_emb, _, fy_emb = model(
+                        _, fx_emb, _, fy_emb = method(
                             x.cuda(gpu, non_blocking=True),
                             y.cuda(gpu, non_blocking=True)
                         )
@@ -299,7 +299,7 @@ def main(args):
                 if args.loss.name in ['neuralsvd', 'neuralef']:
                     print(f"Checking orthonormality after epoch {epoch + 1}...")
                     def extract_emb(x, y):
-                        outputs = model(x, y)
+                        outputs = method(x, y)
                         return outputs[1], outputs[3]
                     spectrum, orthogonality_x, orthogonality_y = compute_spectrum_svd(
                         extract_emb,

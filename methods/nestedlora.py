@@ -388,9 +388,6 @@ class NestedLoRAForCDK(nn.Module):
             step=1,
             sequential=False,
             set_first_mode_const=True,
-            separation=False,
-            separation_mode=None,
-            separation_init_scale=1.,
     ):
         self.name = 'nestedlora'
         super().__init__()
@@ -408,10 +405,10 @@ class NestedLoRAForCDK(nn.Module):
             self.vector_mask, self.matrix_mask = get_joint_nesting_masks(step_weights, set_first_mode_const)
         self.set_first_mode_const = set_first_mode_const
 
-        if separation:
-            raise NotImplementedError
-        else:
-            self.model = model
+        self.model = model
+
+    def forward(self, *args):
+        return self.model(*args)
 
     def compute_loss(
             self,

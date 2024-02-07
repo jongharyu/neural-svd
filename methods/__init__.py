@@ -1,5 +1,5 @@
 from methods.nestedlora import NestedLoRA, NestedLoRAForCDK
-from methods.neuralef import NeuralEigenfunctions, NeuralEigenmapsLossCDK, NeuralEigenmapsLoss
+from methods.neuralef import NeuralEigenfunctions
 from methods.spin import SpIN
 from methods.spinx import SpINx
 
@@ -49,19 +49,14 @@ def get_evd_method(args, method_name, model):
 
 def get_cdk_method(args, method_name, model):
     if method_name == 'neuralsvd':
-        loss_ftn = NestedLoRAForCDK(
+        method = NestedLoRAForCDK(
             model,
             neigs=args.neigs,
             step=args.loss.neuralsvd.step,
             sequential=args.loss.neuralsvd.sequential,
             set_first_mode_const=args.loss.neuralsvd.set_first_mode_const,
         )
-    elif method_name == 'neuralef':
-        loss_ftn = NeuralEigenmapsLossCDK(
-            stop_grad=args.loss.neuralef.stop_grad,
-            reg_weight=args.loss.neuralef.reg_weight
-        )
     else:
         raise NotImplementedError
 
-    return loss_ftn
+    return method
