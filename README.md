@@ -1,7 +1,7 @@
 # Operator SVD via Nested Low-Rank Approximation
 
 This repository contains the PyTorch implementation of `NeuralSVD` and the scripts to replicate the experiments 
-in the paper "[**Operator SVD with Neural Networks via Nested Low-Rank Approximation**](https://arxiv.org/abs/2402.xxxxx)".
+in the paper "[**Operator SVD with Neural Networks via Nested Low-Rank Approximation**](https://arxiv.org/abs/2402.03655)".
 
 **TL;DR**: The proposed `NeuralSVD` can learn the top-$L$ orthogonal singular functions of a given operator using neural networks. 
 
@@ -21,31 +21,31 @@ which can be found under `methods/`.
 ## Experiment 1. Solving Time-Independent Schrödinger Equations
 Install the required dependency by running
 ```bash
-. scripts/install_pde.sh
+. scripts/install/pde.sh
 ```
 
 For the 2D hydrogen experiment, run 
 ```bash
-. scripts/pde_hydrogen.sh $loss_name $batch_size $seq
+. scripts/hydrogen.sh $loss_name $batch_size $seq
 ```
 Here, the last flag `seq` indicates the version of nesting for `NestedLoRA`.
 
 For example, to replicate the set of experiments, one can run 
 ```bash
-. scripts/pde_hydrogen.sh neuralsvd 128 1
-. scripts/pde_hydrogen.sh neuralsvd 512 1
-. scripts/pde_hydrogen.sh neuralsvd 128 0
-. scripts/pde_hydrogen.sh neuralsvd 512 0
-. scripts/pde_hydrogen.sh neuralef 128 0  # last flag doesn't matter
-. scripts/pde_hydrogen.sh neuralef 512 0  # last flag doesn't matter
-. scripts/pde_hydrogen.sh spin 128 0  # last flag doesn't matter
+. scripts/exps/pde/hydrogen.sh neuralsvd 128 1
+. scripts/exps/pde/hydrogen.sh neuralsvd 512 1
+. scripts/exps/pde/hydrogen.sh neuralsvd 128 0
+. scripts/exps/pde/hydrogen.sh neuralsvd 512 0
+. scripts/exps/pde/hydrogen.sh neuralef 128 0  # last flag doesn't matter
+. scripts/exps/pde/hydrogen.sh neuralef 512 0  # last flag doesn't matter
+. scripts/exps/pde/hydrogen.sh spin 128 0  # last flag doesn't matter
 ```
 
 ![Visual comparison of different algorithms.](figs/hydrogen_all.png)
 
 For the 2D harmonic oscillator experiment, similarly run
 ```bash
-. scripts/pde_oscillator.sh $loss_name $batch_size $seq
+. scripts/exps/pde/oscillator.sh $loss_name $batch_size $seq
 ```
 
 ![Quantitative comparison of different algorithms.](figs/hydrogen_eval.png)
@@ -54,15 +54,15 @@ For the 2D harmonic oscillator experiment, similarly run
 ## Experiment 2. Cross-Domain Retrieval with Canonical Dependence Kernel
 First, install the required dependency by running
 ```bash
-. scripts/install_sketchy.sh
+. scripts/install/sketchy.sh
 ```
 
 Then, follow the instruction of https://github.com/AnjanDutta/sem-pcyc to download the `Sketchy Extended` dataset.
 
 To replicate the reported result, one can run
 ```bash
-. scripts/sketchy.sh 1  # for split 1
-. scripts/sketchy.sh 2  # for split 2
+. scripts/exps/sketchy.sh 1  # for split 1
+. scripts/exps/sketchy.sh 2  # for split 2
 ```
 
 ![Retrieval performance evaluation of the learned representation.](figs/sketchy_all.png)
@@ -74,7 +74,7 @@ If you use `NeuralSVD` in your work, please cite the original paper as:
 @article{Ryu--Xu--Erol--Bu--Zheng--Wornell2024,
     title={Operator {SVD} with Neural Networks via Nested Low-Rank Approximation},
     author={Ryu, J. Jon and Xu, Xiangxiang and Erol, H. S. Melihcan and Bu, Yuheng and Zheng, Lizhong and Wornell, Gregory W.},
-    journal={arXiv preprint arXiv:2402.xxxxx},
+    journal={arXiv preprint arXiv:2402.03655},
     year=2024,
 }
 ```

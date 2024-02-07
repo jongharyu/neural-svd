@@ -1,5 +1,5 @@
-from methods.neuralef import NeuralEigenfunctions, NeuralEigenmapsLossCDK, NeuralEigenmapsLoss
 from methods.nestedlora import NestedLoRA, NestedLoRAForCDK
+from methods.neuralef import NeuralEigenfunctions, NeuralEigenmapsLossCDK, NeuralEigenmapsLoss
 from methods.spin import SpIN
 from methods.spinx import SpINx
 
@@ -40,10 +40,6 @@ def get_evd_method(args, method_name, model):
             step=args.loss.neuralsvd.step,
             sort=args.sort,
             sequential=args.loss.neuralsvd.sequential,
-            separation=args.loss.neuralsvd.separation,
-            separation_mode=args.loss.neuralsvd.separation_mode,
-            separation_init_scale=args.loss.neuralsvd.separation_init_scale,
-            inner_product=args.loss.neuralsvd.inner_product,
             residual_weight=args.residual_weight,
         )
     else:
@@ -59,9 +55,6 @@ def get_cdk_method(args, method_name, model):
             step=args.loss.neuralsvd.step,
             sequential=args.loss.neuralsvd.sequential,
             set_first_mode_const=args.loss.neuralsvd.set_first_mode_const,
-            separation=args.loss.neuralsvd.separation,
-            separation_mode=args.loss.neuralsvd.separation_mode,
-            separation_init_scale=args.loss.neuralsvd.separation_init_scale,
         )
     elif method_name == 'neuralef':
         loss_ftn = NeuralEigenmapsLossCDK(

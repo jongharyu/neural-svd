@@ -7,15 +7,8 @@ import torch.nn as nn
 from methods.utils import off_diagonal, BatchL2NormalizedFunctions
 
 
-def compute_lambda(f, inner_product=True):
-    if inner_product or len(f.shape) == 2:
-        return torch.einsum('bl...,bm...->lm', f, f) / f.shape[0]  # (L, L)
-    else:
-        if len(f.shape) == 3:
-            # f: (B, L, O)
-            return torch.einsum('blo,bmp->lmop', f, f) / f.shape[0]  # (L, L, O, O)
-        else:
-            raise NotImplementedError
+def compute_lambda(f):
+    return torch.einsum('bl...,bm...->lm', f, f) / f.shape[0]  # (L, L)
 
 
 class ScaledFunctions(nn.Module):
@@ -61,24 +54,14 @@ def get_sequential_nesting_masks(L, set_first_mode_const: bool = False):
     return vector_mask, matrix_mask
 
 
-def compute_loss_metric(f, g, matrix_mask, inner_product=True):
-    lam_f = compute_lambda(f, inner_product)
-    lam_g = compute_lambda(g, inner_product)
-    if inner_product or len(f.shape) == 2:
-        # compute loss_metric = E_{p(x)p(y)}[(f^T(x) g(y))^2]
-        # f: (B1, L)
-        # g: (B2, L)
-        # lam_f, lam_g: (L, L)
-        return (matrix_mask * lam_f * lam_g).sum(), lam_f, lam_g  # O(L ** 2)
-    else:
-        if len(f.shape) == 3:
-            # compute loss_metric = tr ( E_{p(x)p(y)}[\sum_{ll'} M_{ll'} f_l(x) g_l(y)^T f_{l'}(x) g_{l'}(y)^T] )
-            # f: (B1, L, O)
-            # g: (B2, L, O)
-            # lam_f, lam_g: (L, L, O, O)
-            return (matrix_mask * torch.einsum('lmop,lmop->lm', lam_f, lam_g)).sum(), lam_f, lam_g
-        else:
-            raise RuntimeError
+def compute_loss_metric(f, g, matrix_mask):
+    lam_f = compute_lambda(f)
+    lam_g = compute_lambda(g)
+    # compute loss_metric = E_{p(x)p(y)}[(f^T(x) g(y))^2]
+    # f: (B1, L)
+    # g: (B2, L)
+    # lam_f, lam_g: (L, L)
+    return (matrix_mask * lam_f * lam_g).sum(), lam_f, lam_g  # O(L ** 2)
 
 
 class NestedLoRALossFunctionEVD(torch.autograd.Function):
@@ -92,7 +75,6 @@ class NestedLoRALossFunctionEVD(torch.autograd.Function):
             f2,
             vector_mask,
             matrix_mask,
-            inner_product,
     ):
         """
         the reduction assumed here is `mean` (i.e., we take average over batch)
@@ -104,8 +86,7 @@ class NestedLoRALossFunctionEVD(torch.autograd.Function):
         """
         ctx.vector_mask = vector_mask = vector_mask.to(f.device)
         ctx.matrix_mask = matrix_mask = matrix_mask.to(f.device)
-        ctx.inner_product = inner_product
-        loss_metric, lam_f1, lam_f2 = compute_loss_metric(f1, f2, matrix_mask, inner_product)
+        loss_metric, lam_f1, lam_f2 = compute_loss_metric(f1, f2, matrix_mask)
         ctx.save_for_backward(f, Tf, f1, f2, lam_f1, lam_f2)
         # compute loss_operator = -2 * E_{p(x)}[\sum_{l=1}^L f_l^T(x) (Tf_l)(x)]
         loss_operator = - 2 * torch.einsum('l,bl...,bl...->b', vector_mask, f, Tf).mean()  # O(B1 * L * O)
@@ -125,15 +106,8 @@ class NestedLoRALossFunctionEVD(torch.autograd.Function):
         """
         f, Tf, f1, f2, lam_f1, lam_f2 = ctx.saved_tensors
         operator_f = - (4 / f.shape[0]) * torch.einsum('l,bl...->bl...', ctx.vector_mask, Tf)
-        if ctx.inner_product or len(f.shape) == 2:
-            metric_f1 = (2 / f1.shape[0]) * torch.einsum('lm,lm,bl...->bm...', ctx.matrix_mask, lam_f2, f1)
-            metric_f2 = (2 / f2.shape[0]) * torch.einsum('lm,lm,bl...->bm...', ctx.matrix_mask, lam_f1, f2)
-        else:
-            if len(f.shape) == 3:
-                metric_f1 = (2 / f1.shape[0]) * torch.einsum('lm,lmop,blp->bmo', ctx.matrix_mask, lam_f2, f1)
-                metric_f2 = (2 / f2.shape[0]) * torch.einsum('lm,lmop,blp->bmo', ctx.matrix_mask, lam_f1, f2)
-            else:
-                raise RuntimeError
+        metric_f1 = (2 / f1.shape[0]) * torch.einsum('lm,lm,bl...->bm...', ctx.matrix_mask, lam_f2, f1)
+        metric_f2 = (2 / f2.shape[0]) * torch.einsum('lm,lm,bl...->bm...', ctx.matrix_mask, lam_f1, f2)
         return grad_output * operator_f, None, grad_output * metric_f1, grad_output * metric_f2, None, None, None
 
 
@@ -201,7 +175,6 @@ class NestedLoRA(nn.Module):
             separation=False,
             separation_mode=None,
             separation_init_scale=1.,
-            inner_product=True,
             residual_weight=0.,
     ):
         self.name = 'nestedlora'
@@ -233,7 +206,6 @@ class NestedLoRA(nn.Module):
             raise NotImplementedError
         else:
             self.model = model
-        self.inner_product = inner_product
         self.residual_weight = residual_weight
 
     def forward(self, *args):
@@ -263,7 +235,6 @@ class NestedLoRA(nn.Module):
                 *args,
                 self.vector_mask,
                 self.matrix_mask,
-                self.inner_product,
             )
         else:
             return NestedLoRALossFunctionSVD.apply(

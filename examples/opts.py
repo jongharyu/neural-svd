@@ -58,26 +58,7 @@ def loss_opts(parser):
     group = parser.add_argument_group("NestedLoRA")
     group.add('--neuralsvd.step', default=1, type=int)
     group.add('--neuralsvd.sequential', default=False, type=strtobool, help="if True, apply the sequential nesting")
-    group.add('--neuralsvd.separation', type=strtobool, default=False)
-    group.add('--neuralsvd.separation_init_scale', type=float, default=1.0)
-    group.add('--neuralsvd.separation_mode', type=str, default='bn', choices=['bn', 'id'])
-    group.add('--neuralsvd.separation_decompose_id', type=float, default=0.,
-              help='An alternative way to ensure normalization')
-    group.add('--neuralsvd.inner_product', type=strtobool, default=True,
-              help='If True, treat the matrix-valued kernel by the natural extension of inner product;'
-                   'if False, apply NestedLoRA by decomposing the matrix-valued kernel directly')
-    # ablation
-    group.add('--neuralsvd.ratio_lower_bound', type=float, default=0.)  # cdk only
-    group.add('--neuralsvd.ratio_upper_bound', type=float, default=np.inf)  # cdk only
     group.add('--neuralsvd.set_first_mode_const', type=strtobool, default=True)  # cdk only
-    group.add('--neuralsvd.weight_order', default=1., type=float,
-              help="one (1.) gives the uniform weight (default)")  # fixed kernel only
-    group.add('--neuralsvd.stop_grad', action='store_true')
-    group.add('--neuralsvd.along_batch_dim', action='store_true', default=False)
-    group.add('--neuralsvd.oneshot', default=True, type=strtobool, help="if True, apply the masking trick")
-    group.add('--neuralsvd.unittest', default=False, action='store_true')
-    group.add('--neuralsvd.include_joint', action='store_true')  # cdk only
-    group.add('--neuralsvd.clip_negative', action='store_true')  # cdk only
 
     group = parser.add_argument_group("NeuralEigenfunctions/NeuralEigenmaps")
     group.add('--neuralef.unbiased', type=strtobool, default=False)
