@@ -26,21 +26,13 @@ def get_evd_method(args, method_name, model):
             unbiased=args.loss.neuralef.unbiased,
             sort=args.sort,
         )
-    elif method_name == 'neigenmaps':
-        method = NeuralEigenmapsLoss(
-            model=model,
-            neigs=args.neigs,
-            batchnorm_mode=args.loss.neuralef.batchnorm_mode,
-            reg_weight=args.loss.neuralef.reg_weight
-        )
     elif method_name == 'neuralsvd':
         method = NestedLoRA(
-            model,
+            model=model,
             neigs=args.neigs,
             step=args.loss.neuralsvd.step,
             sort=args.sort,
             sequential=args.loss.neuralsvd.sequential,
-            residual_weight=args.residual_weight,
         )
     else:
         raise NotImplementedError

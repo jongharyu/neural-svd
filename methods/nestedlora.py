@@ -172,10 +172,6 @@ class NestedLoRA(nn.Module):
             step=1,
             sort=False,
             sequential=False,
-            separation=False,
-            separation_mode=None,
-            separation_init_scale=1.,
-            residual_weight=0.,
     ):
         self.name = 'nestedlora'
         super().__init__()
@@ -194,19 +190,7 @@ class NestedLoRA(nn.Module):
             step_weights[np.array(end_indices) - 1] = 1.
             step_weights = torch.tensor(step_weights / sum(step_weights))
             self.vector_mask, self.matrix_mask = get_joint_nesting_masks(step_weights)
-        if separation:
-            init_scales = separation_init_scale * torch.linspace(1. / neigs, 1, neigs).flip(0)
-            if separation_mode == 'bn':
-                base_model = BatchL2NormalizedFunctions(model, neigs)
-            elif separation_mode == 'id':
-                base_model = model
-            else:
-                raise ValueError
-            self.model = ScaledFunctions(base_model, init_scales=init_scales)
-            raise NotImplementedError
-        else:
-            self.model = model
-        self.residual_weight = residual_weight
+        self.model = model
 
     def forward(self, *args):
         output = self.model(*args)
@@ -249,43 +233,20 @@ class NestedLoRA(nn.Module):
             x,
             importance,
             split_batch: bool,
-            operator_inverse: bool,
             evd: bool = True,
     ):
         if evd:
             if split_batch:
                 x1, x2 = torch.chunk(x, 2)
-                if not operator_inverse:
-                    Kf1, f1 = get_approx_kernel_op(x2)(self, x1, importance=importance)
-                    f2 = self(x2)
-                    loss = self._compute_loss(f1, Kf1, f1, f2, evd=True)
-                    if self.residual_weight > 0.:
-                        Kf2, f2 = get_approx_kernel_op(x1)(self, x2, importance=importance)
-                        loss += self.residual_weight * CauchySchwarzResidual()(f1, Kf2, f1, Kf1, f2, Kf2)
-                        # TODO: needs to be double checked if (f1, Kf1) and (f2, Kf2) are independent
-                    f = f1
-                    Kf = Kf1
-                else:
-                    Kf1, f1 = get_approx_kernel_op(x2)(self, x1, importance=importance)
-                    Kf2, f2 = get_approx_kernel_op(x2)(self, x2, importance=importance)
-                    loss = self._compute_loss(Kf1, f1, Kf1, Kf2, evd=True)
-                    if self.residual_weight > 0.:
-                        loss += self.residual_weight * CauchySchwarzResidual()(f1, Kf2, f1, Kf1, f2, Kf2)
-                        # TODO: needs to be double checked if (f1, Kf1) and (f2, Kf2) are independent
-                    f = torch.cat([f1, f2])
-                    Kf = torch.cat([Kf1, Kf2])
+                Kf1, f1 = get_approx_kernel_op(x2)(self, x1, importance=importance)
+                f2 = self.model(x2)
+                loss = self._compute_loss(f1, Kf1, f1, f2, evd=True)
+                f = f1
+                Kf = Kf1
             else:
                 Kf, f = get_approx_kernel_op(x)(self, x, importance=importance)
-                if not operator_inverse:
-                    f1, f2 = torch.chunk(f, 2)
-                    loss = self._compute_loss(f, Kf, f1, f2, evd=True)
-                else:
-                    Kf1, Kf2 = torch.chunk(Kf, 2)
-                    loss = self._compute_loss(Kf, f, Kf1, Kf2, evd=True)
-                if self.residual_weight > 0.:
-                    f1, f2 = torch.chunk(f, 2)
-                    Kf1, Kf2 = torch.chunk(Kf, 2)
-                    loss += self.residual_weight * CauchySchwarzResidual()(f1, Kf2, f1, Kf1, f2, Kf2)
+                f1, f2 = torch.chunk(f, 2)
+                loss = self._compute_loss(f, Kf, f1, f2, evd=True)
             return loss, dict(f=f, Tf=Kf, eigvals=None)
         else:
             raise NotImplementedError
@@ -295,21 +256,12 @@ class NestedLoRA(nn.Module):
             operator,
             x,
             importance=None,
-            operator_inverse: bool = False,
             evd: bool = True,
     ):
         if evd:
             Tf, f = operator(self, x, importance=importance)
-            if not operator_inverse:
-                f1, f2 = torch.chunk(f, 2)
-                loss = self._compute_loss(f, Tf, f1, f2, evd=True)
-            else:
-                Tf1, Tf2 = torch.chunk(Tf, 2)
-                loss = self._compute_loss(Tf, f, Tf1, Tf2, evd=True)
-            if self.residual_weight > 0.:
-                f1, f2 = torch.chunk(f, 2)
-                Tf1, Tf2 = torch.chunk(Tf, 2)
-                loss += self.residual_weight * CauchySchwarzResidual()(f1, Tf2, f1, Tf1, f2, Tf2)
+            f1, f2 = torch.chunk(f, 2)
+            loss = self._compute_loss(f, Tf, f1, f2, evd=True)
             return loss, dict(f=f, Tf=Tf, eigvals=None)
         else:
             raise NotImplementedError
