@@ -32,6 +32,7 @@ Here, the last flag `seq` indicates the version of nesting for `NestedLoRA`.
 
 For example, to replicate the set of experiments, one can run 
 ```bash
+conda activate pde
 . scripts/exps/pde/hydrogen.sh neuralsvd 128 1  # sequential nesting
 . scripts/exps/pde/hydrogen.sh neuralsvd 512 1  # sequential nesting
 . scripts/exps/pde/hydrogen.sh neuralsvd 128 0  # joint nesting
@@ -45,6 +46,7 @@ For example, to replicate the set of experiments, one can run
 
 For the 2D harmonic oscillator experiment, similarly run
 ```bash
+conda activate pde
 . scripts/exps/pde/oscillator.sh $loss_name $batch_size $seq
 ```
 
@@ -61,6 +63,7 @@ Then, follow the instruction of https://github.com/AnjanDutta/sem-pcyc to downlo
 
 To replicate the reported result, one can run
 ```bash
+conda activate sketchy
 . scripts/exps/sketchy.sh 1  # for split 1
 . scripts/exps/sketchy.sh 2  # for split 2
 ```

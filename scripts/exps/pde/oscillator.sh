@@ -67,5 +67,5 @@ args=(
 )
 
 for seed in {0..9}; do
-    $ROOT/.conda/envs/pde/bin/python $SRCROOT/examples/operator/main_pde.py "${args[@]}" --loss_name $1 --seed $seed
+    python $SRCROOT/examples/operator/pde/main_pde.py "${args[@]}" --loss_name $1 --seed $seed
 done
