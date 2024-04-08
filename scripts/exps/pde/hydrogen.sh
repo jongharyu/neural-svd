@@ -12,7 +12,7 @@ args=(
     --optimizer rmsprop
     --use_lr_scheduler
     --ema_decay 0.995
-    --batch_size 128
+    --batch_size $2
     --lr 1e-4
     --momentum 0.
     --num_iters 500000
@@ -61,7 +61,6 @@ args=(
 
     --neuralef.unbiased 1  # default: 0
     --neuralef.include_diag 0
-    --neuralef.normalize 1
     --neuralef.batchnorm_mode unbiased  # default: biased
 
     # --print_local_energies

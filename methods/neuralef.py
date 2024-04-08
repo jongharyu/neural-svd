@@ -75,7 +75,10 @@ class NeuralEigenfunctions(nn.Module):
     ):
         self.name = 'neuralef'
         super().__init__()
-        self.model = BatchL2NormalizedFunctions(model, neigs, batchnorm_mode=batchnorm_mode)
+        if batchnorm_mode != 'none':
+            self.model = BatchL2NormalizedFunctions(model, neigs, batchnorm_mode=batchnorm_mode)
+        else:
+            self.model = model
         self.unbiased = unbiased  # if True, becomes mu-EigenGame
         self.diagonal = 0 if include_diag else 1  # (when unbiased is True) if True, becomes GHA (Sanger)
         self.sort = sort

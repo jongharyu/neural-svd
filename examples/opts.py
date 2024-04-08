@@ -64,7 +64,6 @@ def loss_opts(parser):
     group.add('--neuralef.unbiased', type=strtobool, default=False)
     group.add('--neuralef.batchnorm_mode', type=str, default='unbiased', choices=['biased', 'unbiased'])
     group.add('--neuralef.include_diag', type=strtobool, default=False)
-    group.add('--neuralef.normalize', type=strtobool, default=True)
     # neigenmaps
     group.add('--neuralef.reg_weight', type=float, default=1.0)
     group.add('--neuralef.stop_grad', type=strtobool, default=True)  # cdk only
