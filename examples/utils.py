@@ -21,17 +21,17 @@ def get_loss_descriptor(args):
         if args.loss.neuralef.unbiased:
             if args.loss.neuralef.include_diag:
                 assert args.loss.neuralef.batchnorm_mode == 'none'
-                loss_name = 'Sanger'
+                loss_name = 'Sanger_diag1bn0'
             else:
                 assert args.loss.neuralef.batchnorm_mode != 'none'
-                loss_name = 'muEG'
+                loss_name = f'muEG_diag1bn{args.loss.neuralef.batchnorm_mode}'
         else:
             if args.loss.neuralef.include_diag:
                 assert args.loss.neuralef.batchnorm_mode == 'none'
-                loss_name = 'alphaEGdiag'
+                loss_name = 'alphaEGdiag_diag0bn0'
             else:
                 assert args.loss.neuralef.batchnorm_mode != 'none'
-                loss_name = 'alphaEG'
+                loss_name = f'alphaEG_diag0bn{args.loss.neuralef.batchnorm_mode}'
         loss_name = f'{loss_name}_l2bn{args.loss.neuralef.batchnorm_mode}'
     elif args.loss.name == 'spin':
         loss_name = f'spin_decay{args.loss.spin.decay}'
