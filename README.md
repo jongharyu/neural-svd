@@ -1,9 +1,9 @@
 # Operator SVD via Nested Low-Rank Approximation
 
 This repository contains the PyTorch implementation of `NeuralSVD` and the scripts to replicate the experiments 
-in the paper "[**Operator SVD with Neural Networks via Nested Low-Rank Approximation**](https://openreview.net/forum?id=qESG5HaaoJ)".
+in the paper "[**Operator SVD with Neural Networks via Nested Low-Rank Approximation**](https://openreview.net/forum?id=qESG5HaaoJ)" (ICML 2024).
 
-**TL;DR**: The proposed `NeuralSVD` can learn the top-$L$ orthogonal singular functions of a given operator using neural networks. 
+**TL;DR**: The proposed `NeuralSVD` can learn the top-$`L`$ orthogonal singular functions of a given operator using neural networks. 
 
 Conceptually, the optimization framework called "nested low-rank approximation" (thus abbreviated as `NestedLoRA`) is proposed,
 and when neural networks are used to parameterize the singular- (or eigen-) functions, we call the overall method `NeuralSVD`. 
