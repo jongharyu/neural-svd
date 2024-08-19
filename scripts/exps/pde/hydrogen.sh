@@ -54,10 +54,6 @@ args=(
 
     --neuralsvd.step 1
     --neuralsvd.sequential $3
-    --neuralsvd.separation 0
-    --neuralsvd.separation_mode bn
-    --neuralsvd.separation_init_scale 100
-    --neuralsvd.separation_decompose_id 0.1
 
     --neuralef.unbiased 1  # default: 0
     --neuralef.include_diag 0
