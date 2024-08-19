@@ -127,6 +127,4 @@ def get_problem(args, device):
     )
     ground_truth_spectrum = (args.operator_scale * ground_truth_spectrum + args.operator_shift
                              if ground_truth_spectrum is not None else None)
-    if args.operator_inverse:
-        ground_truth_spectrum = np.maximum(sorted(1 / ground_truth_spectrum)[::-1], 0.)
     return operator, ground_truth_spectrum
