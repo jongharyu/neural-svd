@@ -13,9 +13,6 @@ def get_loss_descriptor(args):
         loss_name = f'{args.loss.name}' \
                     f'{"_seq" if args.loss.neuralsvd.sequential else "_jnt"}' \
                     f'{"_sort" if args.sort else ""}' \
-                    f'{"" if args.loss.neuralsvd.inner_product else "_inp0"}' \
-                    f'{"_sg" if args.loss.neuralsvd.stop_grad else ""}' \
-                    f'{f"_sep{args.loss.neuralsvd.separation_init_scale}" if args.loss.neuralsvd.separation else ""}' \
                     f'{f"_step{args.loss.neuralsvd.step}" if (args.loss.neuralsvd.step > 1 and not args.loss.neuralsvd.sequential) else ""}'
     elif args.loss.name == 'neuralef':
         if args.loss.neuralef.unbiased:
