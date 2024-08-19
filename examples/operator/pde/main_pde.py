@@ -150,7 +150,7 @@ def get_log_dir(args):
     assert args.sampling_mode in ['gaussian', 'laplacian', 'uniform']
     return os.path.join(
         args.log_dir,
-        f'{problem}_ss{args.operator_scale},{args.operator_shift}_inv{int(args.operator_inverse)}',
+        f'{problem}_ss{args.operator_scale},{args.operator_shift}',
         f'{loss_name}_rsdl{args.residual_weight}'
         f'_neigs{args.neigs}'
         f'_{args.nonlinearity}_wn{int(args.weight_normalization)}_p{int(args.parallel)}'

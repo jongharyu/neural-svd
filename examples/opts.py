@@ -45,7 +45,6 @@ def fourier_opts(parser):
 def operator_opts(parser):
     parser.add_argument('--operator_scale', default=1., type=float)
     parser.add_argument('--operator_shift', default=0., type=float)
-    parser.add_argument('--operator_inverse', default=False, action='store_true')
 
 
 def loss_opts(parser):

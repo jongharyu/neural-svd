@@ -63,7 +63,6 @@ def train_operator(
                 operator,
                 x,
                 importance=importance_train,
-                operator_inverse=args.operator_inverse,
             )
         scale = scaler.get_scale()
         scaler.scale(loss).backward()
