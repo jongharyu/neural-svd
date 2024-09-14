@@ -13,13 +13,13 @@ from tqdm import tqdm
 from examples import opts
 from examples.cdk.sketchy.data import SketchyVGGDataLoader
 from examples.cdk.sketchy.retrieve import SketchyRetrieval
-from examples.cdk.ssl.optimizers import get_optimizer_with_params
+from examples.cdk.optimizers import get_optimizer_with_params
 from examples.cdk.utils import plot_hist_ratios_wrapper
 from examples.models.mlp import get_mlp
 from examples.models.siam import HeteroNetwork
 from examples.opts import parse_loss_configs
 from examples.utils import get_log_file
-from methods import get_cdk_method
+from methods.cdk import get_cdk_method
 from methods.utils import parse_str
 from methods.spectrum import compute_spectrum_svd, plot_and_save_spectrum
 from tools.generic import set_deterministic
@@ -129,7 +129,7 @@ def main(args):
                                                device=gpu)
 
     # define loss function
-    method = get_cdk_method(args, args.loss.name, model)
+    method = get_cdk_method(args, model)
 
     # for NeuralSVD, we check and plot spectrum
     spectrum_dir = None

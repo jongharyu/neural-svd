@@ -16,7 +16,7 @@ from examples.operator import train_operator
 from examples.operator.pde.problems import get_problem
 from examples.opts import parse_loss_configs
 from examples.utils import get_log_file, get_loss_descriptor
-from methods import get_evd_method
+from methods.general import get_evd_method
 
 plt.style.use('ggplot')
 IMPLEMENTED_LOSSES = ('neuralsvd', 'neuralef', 'spin')
